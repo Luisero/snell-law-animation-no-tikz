@@ -39,6 +39,20 @@ class SnellsLaw(Scene):
         self.play(Create(raio_luz_2))
         self.play(Rotate(raio_luz_2, TAU /12), about_point=ORIGIN, run_time=2)  # Girando 90 graus no sentido anti-horário
 
+        chave_x = always_redraw(
+            lambda:  BraceLabel( raio_luz_1, "x", brace_direction=DOWN)
+        # Adicionando a chave à cena
+        )
+
+        chave_d = always_redraw(
+            lambda: BraceLabel(Line(raio_luz_2.get_end(), raio_luz_1.get_end()), 'd', brace_direction=DOWN)
+        )
+
+
+        
+
+        self.play(Create(chave_x))
+        self.play(Create(chave_d))
 
         texto_raio1 = Text("Raio de luz", font_size=14).next_to(raio_luz_1, UP)
         texto_raio2 = Text("Raio de luz da refração", font_size=14).next_to(raio_luz_2, DOWN+ RIGHT)
@@ -74,7 +88,5 @@ class SnellsLaw(Scene):
         self.wait(2)
 
 
-        chave_x = BraceLabel( raio_luz_1, "x", brace_direction=DOWN)
-        # Adicionando a chave à cena
-        self.play(Create(chave_x))
+        
         self.wait(1)
