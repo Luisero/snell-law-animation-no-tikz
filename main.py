@@ -48,11 +48,19 @@ class SnellsLaw(Scene):
             lambda: BraceLabel(Line(raio_luz_2.get_end(), raio_luz_1.get_end()), 'd', brace_direction=DOWN)
         )
 
+        chave_ha = always_redraw(
+            lambda: BraceLabel(raio_luz_1, r'h_a', brace_direction=LEFT)
+        )
+        chave_hw = always_redraw(
+            lambda: BraceLabel(Line(ORIGIN+LEFT*2, raio_luz_2.get_end()+ LEFT*2), r'h_w', brace_direction=LEFT)
+        )
 
-        
+
 
         self.play(Create(chave_x))
         self.play(Create(chave_d))
+        self.play(Create(chave_ha))
+        self.play(Create(chave_hw))
 
         texto_raio1 = Text("Raio de luz", font_size=14).next_to(raio_luz_1, UP)
         texto_raio2 = Text("Raio de luz da refração", font_size=14).next_to(raio_luz_2, DOWN+ RIGHT)
@@ -76,7 +84,7 @@ class SnellsLaw(Scene):
         )  
 
         self.wait(1)
-
+        self.play(FadeOut(texto_raio1, texto_raio2))
         texto1 = Text('Aumentando o índice de refração', font_size=16 )
         texto1.to_edge(UP+RIGHT)
         self.play(Write(texto1))
@@ -85,8 +93,11 @@ class SnellsLaw(Scene):
         self.play(Rotate(raio_luz_2, -TAU/22)
              ,about_point=ORIGIN, run_time=2)
 
-        self.wait(2)
+        self.wait(1)
 
+        self.remove(texto1)
+        self.play(Rotate(raio_luz_2, TAU/22)
+             ,about_point=ORIGIN, run_time=2)
 
         
         self.wait(1)
