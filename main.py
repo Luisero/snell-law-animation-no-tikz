@@ -1,6 +1,6 @@
 from manim import *
 
-class SnellsLaw(Scene):
+class SnellsLaw(MovingCameraScene):
     def construct(self):
         
         comprimento_linha = 6
@@ -98,6 +98,25 @@ class SnellsLaw(Scene):
         self.remove(texto1)
         self.play(Rotate(raio_luz_2, TAU/22)
              ,about_point=ORIGIN, run_time=2)
+
+        self.camera.frame.save_state()
+        self.play(self.camera.frame.animate.set(width=linha_horizontal.width*1.7).move_to(RIGHT*5))
+        self.wait(1)
+
+        self.play(
+            Rotate(raio_luz_1, TAU / 16),
+            Rotate(raio_luz_2, TAU/18)
+             ,about_point=ORIGIN, run_time=2
+            )  
+
+        self.wait(1)
+
+        #voltando da rotacao feita
+        self.play(
+            Rotate(raio_luz_1, -TAU / 16),
+            Rotate(raio_luz_2, -TAU/18)
+             ,about_point=ORIGIN, run_time=2
+        )  
 
         
         self.wait(1)
