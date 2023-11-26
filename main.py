@@ -34,24 +34,34 @@ class SnellsLaw(MovingCameraScene):
             color=LIGHT_GREY
         )
 
-        self.play(Create(raio_luz_1))
+        self.play(
+            Create(raio_luz_1),
+            Create(raio_luz_2)
+            )
         self.play(Rotate(raio_luz_1, TAU / 8), about_point=ORIGIN, run_time=1)  # Girando 90 graus no sentido anti-horário
-        self.play(Create(raio_luz_2))
         self.play(Rotate(raio_luz_2, TAU /12), about_point=ORIGIN, run_time=1)  # Girando 90 graus no sentido anti-horário
         
         #adicionando angulos
         angulo_theta_1 = always_redraw(
             lambda: Angle(raio_luz_1, linha_horizontal, radius=0.5, quadrant=(1,-1))
         )
+        texto_theta_1= always_redraw(
+            lambda:MathTex(r'\theta_1', font_size=24, color=RED).next_to(angulo_theta_1, ORIGIN+LEFT/2)
+        )
+        
         angulo_theta_2 = always_redraw(
             lambda: Angle(linha_da_normal, raio_luz_2, radius=0.5, quadrant=(-1,1))
         )
+        texto_theta_2 = always_redraw(
+            lambda:MathTex(r'\theta_2', font_size=24, color=RED).next_to(angulo_theta_2, ORIGIN+DOWN/2)
+        )
+        
 
     
 
-        self.play(Create(angulo_theta_1))
-        self.play(Create(angulo_theta_2))
-
+        self.play(Create(angulo_theta_1), Create(angulo_theta_2))
+        self.play(Create(texto_theta_1), Create(texto_theta_2))
+        
 
         chave_x = always_redraw(
             lambda:  BraceLabel( raio_luz_1, "x", brace_direction=DOWN)
@@ -115,16 +125,40 @@ class SnellsLaw(MovingCameraScene):
 
         self.camera.frame.save_state()
         self.play(self.camera.frame.animate.set(width=linha_horizontal.width*1.7).move_to(RIGHT*5))
-        self.wait(1)
+        
+
+        
+
+        axes = Axes(
+            x_range=[-2, 6, 1],  # Ajuste o intervalo dos eixos conforme necessário
+            y_range=[-1, 10, 1],
+            axis_config={"color": BLUE},
+        )
+
+        # Deslocando os eixos para a direita
+        axes.move_to(RIGHT * 12)
+
+        # Adicionando os eixos à cena
+        self.play(Create(axes))
+        # Criando o gráfico da função quadrática
+        graph = axes.plot(lambda x: x**2 - 5*x + 7, color=WHITE)
+
+        # Adicionando o gráfico à cena
+        self.play(Create(graph))
+
+        # Adicionando um ponto que se move ao longo da linha da função
+        point =Dot(color=RED).move_to(axes.coords_to_point(0, 7))
+
+        self.play(Create(point), run_time=1)
+        # Movendo o ponto ao longo da função    
+        
 
         self.play(
-            Rotate(raio_luz_1, TAU / 16),
-            Rotate(raio_luz_2, TAU/18)
-             ,about_point=ORIGIN, run_time=2
+            Rotate(raio_luz_1, TAU / 16, about_point=ORIGIN),
+            Rotate(raio_luz_2, TAU/18,  about_point=ORIGIN),
+            MoveAlongPath(point, graph, run_time=10),
+            run_time=1
             )  
-
-        self.wait(1)
-
         #voltando da rotacao feita
         self.play(
             Rotate(raio_luz_1, -TAU / 16),
@@ -132,5 +166,5 @@ class SnellsLaw(MovingCameraScene):
              ,about_point=ORIGIN, run_time=2
         )  
 
-        
+    
         self.wait(1)
