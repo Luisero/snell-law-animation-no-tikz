@@ -31,13 +31,27 @@ class SnellsLaw(MovingCameraScene):
         raio_luz_2 = Line(
             start=ORIGIN,
             end= DOWN * comprimento_raio_luz,
-            color=LIGHT_PINK
+            color=LIGHT_GREY
         )
 
         self.play(Create(raio_luz_1))
-        self.play(Rotate(raio_luz_1, TAU / 8), about_point=ORIGIN, run_time=2)  # Girando 90 graus no sentido anti-horário
+        self.play(Rotate(raio_luz_1, TAU / 8), about_point=ORIGIN, run_time=1)  # Girando 90 graus no sentido anti-horário
         self.play(Create(raio_luz_2))
-        self.play(Rotate(raio_luz_2, TAU /12), about_point=ORIGIN, run_time=2)  # Girando 90 graus no sentido anti-horário
+        self.play(Rotate(raio_luz_2, TAU /12), about_point=ORIGIN, run_time=1)  # Girando 90 graus no sentido anti-horário
+        
+        #adicionando angulos
+        angulo_theta_1 = always_redraw(
+            lambda: Angle(raio_luz_1, linha_horizontal, radius=0.5, quadrant=(1,-1))
+        )
+        angulo_theta_2 = always_redraw(
+            lambda: Angle(linha_da_normal, raio_luz_2, radius=0.5, quadrant=(-1,1))
+        )
+
+    
+
+        self.play(Create(angulo_theta_1))
+        self.play(Create(angulo_theta_2))
+
 
         chave_x = always_redraw(
             lambda:  BraceLabel( raio_luz_1, "x", brace_direction=DOWN)
