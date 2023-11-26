@@ -127,44 +127,16 @@ class SnellsLaw(MovingCameraScene):
         self.play(self.camera.frame.animate.set(width=linha_horizontal.width*1.7).move_to(RIGHT*5))
         
 
-        
-
-        axes = Axes(
-            x_range=[-2, 6, 1],  # Ajuste o intervalo dos eixos conforme necessário
-            y_range=[-1, 10, 1],
-            axis_config={"color": BLUE},
-        )
-
-        # Deslocando os eixos para a direita
-        axes.move_to(RIGHT * 12)
-
-        # Adicionando os eixos à cena
-        self.play(Create(axes))
-        # Criando o gráfico da função quadrática
-        graph = axes.plot(lambda x: x**2 - 5*x + 7, color=WHITE)
-
-        # Adicionando o gráfico à cena
-        self.play(Create(graph))
-
-        # Adicionando um ponto que se move ao longo da linha da função
-        point =Dot(color=RED).move_to(axes.coords_to_point(0, 7))
-
-        self.play(Create(point), run_time=1)
-        # Movendo o ponto ao longo da função    
-        
-
         self.play(
             Rotate(raio_luz_1, TAU / 16, about_point=ORIGIN),
-            Rotate(raio_luz_2, TAU/18,  about_point=ORIGIN),
-            MoveAlongPath(point, graph, run_time=10),
-            run_time=1
-            )  
+            Rotate(raio_luz_2, TAU/18,  about_point=ORIGIN), run_time=2)
+        
         #voltando da rotacao feita
         self.play(
-            Rotate(raio_luz_1, -TAU / 16),
-            Rotate(raio_luz_2, -TAU/18)
-             ,about_point=ORIGIN, run_time=2
-        )  
+            Rotate(raio_luz_1, -TAU / 16, about_point=ORIGIN),
+            Rotate(raio_luz_2, -TAU/18,  about_point=ORIGIN),
+            run_time=2
+            )  
 
     
         self.wait(1)
