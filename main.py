@@ -127,16 +127,68 @@ class SnellsLaw(MovingCameraScene):
         self.play(self.camera.frame.animate.set(width=linha_horizontal.width*1.7).move_to(RIGHT*5))
         
 
-        self.play(
-            Rotate(raio_luz_1, TAU / 16, about_point=ORIGIN),
-            Rotate(raio_luz_2, TAU/18,  about_point=ORIGIN), run_time=2)
+     
+        #grafico do tempo
+        axes  = Axes(x_range=(-1,5), y_range=(-1,12))
+        labels = axes.get_axis_labels(
+            Tex("x").scale(0.7), Text("t").scale(0.45)
+        )
+        axes.set_color([BLUE, GREEN])
+
+        axes.move_to(RIGHT*12)
+
+        self.play(Create(axes))
+        self.add(labels)
         
+        parabola = axes.plot(lambda x: x**2 -5*x+7)
+        parabola.set_stroke(BLUE)
+        self.play(
+            Create(parabola)
+        )
+        self.wait()
+
+        # You can use axes.input_to_graph_point, abbreviated
+        # to axes.i2gp, to find a particular point on a graph
+        dot = Dot(color=RED)
+        dot.move_to(axes.i2gp(0, parabola))
+        self.play(FadeIn(dot, scale=0.5))
+
+        # A value tracker lets us animate a parameter, usually
+        # with the intent of having other mobjects update based
+        # on the parameter
+        x_tracker = ValueTracker(0)
+        f_always(
+            dot.move_to,
+            lambda: axes.i2gp(x_tracker.get_value(), parabola)
+        )
+
+        
+
+        rotacionar_raios_maior_angulo = AnimationGroup(
+            Rotate(raio_luz_1, TAU / 16, about_point=ORIGIN),
+            Rotate(raio_luz_2, TAU/18,  about_point=ORIGIN),
+            run_time=2
+            )
+        
+        self.play(
+            rotacionar_raios_maior_angulo,
+            x_tracker.animate.set_value(4),
+            run_time=3
+           )
+        
+        rotacionar_raio_para_menor_angulo = AnimationGroup(
+            Rotate(raio_luz_1, -TAU / 20, about_point=ORIGIN),
+            Rotate(raio_luz_2, -TAU/24,  about_point=ORIGIN),
+            run_time=2
+        )
         #voltando da rotacao feita
         self.play(
-            Rotate(raio_luz_1, -TAU / 16, about_point=ORIGIN),
-            Rotate(raio_luz_2, -TAU/18,  about_point=ORIGIN),
+            rotacionar_raio_para_menor_angulo,
+            x_tracker.animate.set_value(2.5),
             run_time=2
             )  
 
+        
+        
     
         self.wait(1)
