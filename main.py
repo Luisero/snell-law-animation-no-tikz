@@ -124,18 +124,22 @@ class SnellsLaw(MovingCameraScene):
              ,about_point=ORIGIN, run_time=2)
 
         self.camera.frame.save_state()
-        self.play(self.camera.frame.animate.set(width=linha_horizontal.width*1.7).move_to(RIGHT*5))
+        self.play(self.camera.frame.animate.set(width=linha_horizontal.width*1.8).move_to(RIGHT*6))
         
+        texto_fermat = Text('Príncipio de Fermat: A luz sempre percorrerá o caminho que gaste o menor tempo', font_size=22)
+        texto_fermat.move_to(RIGHT*5+UP*4)
+        self.play(Write(texto_fermat),run_time=1)
 
      
         #grafico do tempo
-        axes  = Axes(x_range=(-1,5), y_range=(-1,12))
+        axes  = Axes(x_range=(-1,5), y_range=(-1,10))
         labels = axes.get_axis_labels(
-            Tex("x").scale(0.7), Text("t").scale(0.45)
+            Tex("x"), Tex("t")
         )
+        labels.move_to(RIGHT*10)
         axes.set_color([BLUE, GREEN])
 
-        axes.move_to(RIGHT*12)
+        axes.move_to(RIGHT*10)
 
         self.play(Create(axes))
         self.add(labels)
@@ -151,7 +155,7 @@ class SnellsLaw(MovingCameraScene):
         # to axes.i2gp, to find a particular point on a graph
         dot = Dot(color=RED)
         dot.move_to(axes.i2gp(0, parabola))
-        self.play(FadeIn(dot, scale=0.5))
+        self.play(FadeIn(dot, scale=0.8))
 
         # A value tracker lets us animate a parameter, usually
         # with the intent of having other mobjects update based
@@ -189,6 +193,7 @@ class SnellsLaw(MovingCameraScene):
             )  
 
         
-        
+        #self.play(self.camera.frame.animate.set(width=linha_horizontal.width*1.8).move_to(RIGHT*6))
+
     
         self.wait(1)
