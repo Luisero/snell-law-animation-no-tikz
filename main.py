@@ -69,7 +69,7 @@ class SnellsLaw(MovingCameraScene):
         )
 
         chave_d = always_redraw(
-            lambda: BraceLabel(Line(raio_luz_2.get_end(), raio_luz_1.get_end()), 'd', brace_direction=DOWN)
+            lambda: BraceLabel(Line(raio_luz_2.get_end(), raio_luz_1.get_end()), 'l', brace_direction=DOWN)
         )
 
         chave_ha = always_redraw(
@@ -193,14 +193,25 @@ class SnellsLaw(MovingCameraScene):
             )  
 
         
-        equation_time = MathTex(r'T=\frac{\sqrt{ x^2 + ha^2 }}{v1} + \frac{\sqrt{hw^2 + (d-x)^2}}{v2}')
+        equation_time = MathTex(r'T=\frac{\sqrt{ x^2 + ha^2 }}{v1} + \frac{\sqrt{hw^2 + (l-x)^2}}{v2}')
         equation_time.move_to(RIGHT*10+UP)
-        self.remove(axes, dot, labels, parabola)
-        self.play(Write(equation_time))
+        self.remove(axes, dot, labels)
+        self.play(ReplacementTransform(parabola,equation_time))
         self.wait(1)
-        equation_time_transformed = MathTex(r'T=\frac{\sqrt{x^2+ha^2}}{v1} + \frac{\sqrt{hw^2+d^2-2dx+x^2}}{v2}')
+
+        equation_time_transformed = MathTex(r'T=\frac{\sqrt{x^2+ha^2}}{v1} + \frac{\sqrt{hw^2+l^2-2lx+x^2}}{v2}')
         equation_time_transformed.move_to(RIGHT*10+UP)
-        self.play(Transform(equation_time, equation_time_transformed))
+        self.play(ReplacementTransform(equation_time, equation_time_transformed))
+        
+        self.wait(1)
+        
+        equation_time_by_x = MathTex(r'\frac{dT}{dx} = \frac{x}{v1\sqrt{x^2+ ha^2}} + \frac{-(l-x)}{v2\sqrt{(l-x)^2+hw^2}} = 0')
+        equation_time_by_x.move_to(equation_time_transformed)
+        self.remove(equation_time_transformed)
+        self.play(ReplacementTransform(equation_time_transformed, equation_time_by_x))
+        self.wait(1)
+        
+        
         
         
         self.wait(1)
