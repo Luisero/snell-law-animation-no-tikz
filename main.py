@@ -236,4 +236,15 @@ class SnellsLaw(MovingCameraScene):
         self.wait(1)
 
 
+        relation_with_light_speed = MathTex(r'\frac{n_1\sin\theta_1}{c} = \frac{n2\sin\theta_2}{c}')
+        relation_with_light_speed.move_to(equation_angle_and_velocity)
+        self.play(ReplacementTransform(equation_angle_and_velocity, relation_with_light_speed))
+        self.wait(1)
+
+        final_equation = MathTex(r'n_1\sin\theta_1 = n_2\sin\theta2')
+        final_equation.set_color_by_gradient("#b1fc03", "#03fce8")
+
+        final_equation.move_to(relation_with_light_speed)
+        self.play(ReplacementTransform(relation_with_light_speed, final_equation))
+        self.play(final_equation.animate.shift(UP))
         self.wait(1)
