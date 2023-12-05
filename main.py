@@ -193,25 +193,47 @@ class SnellsLaw(MovingCameraScene):
             )  
 
         
-        equation_time = MathTex(r'T=\frac{\sqrt{ x^2 + ha^2 }}{v1} + \frac{\sqrt{hw^2 + (l-x)^2}}{v2}')
+        equation_time = MathTex(r'T=\frac{\sqrt{ x^2 + ha^2 }}{v_1} + \frac{\sqrt{hw^2 + (l-x)^2}}{v_2}')
         equation_time.move_to(RIGHT*10+UP)
         self.remove(axes, dot, labels)
         self.play(ReplacementTransform(parabola,equation_time))
         self.wait(1)
 
-        equation_time_transformed = MathTex(r'T=\frac{\sqrt{x^2+ha^2}}{v1} + \frac{\sqrt{hw^2+l^2-2lx+x^2}}{v2}')
+        equation_time_transformed = MathTex(r'T=\frac{\sqrt{x^2+ha^2}}{v_1} + \frac{\sqrt{hw^2+l^2-2lx+x^2}}{v_2}')
         equation_time_transformed.move_to(RIGHT*10+UP)
         self.play(ReplacementTransform(equation_time, equation_time_transformed))
         
         self.wait(1)
         
-        equation_time_by_x = MathTex(r'\frac{dT}{dx} = \frac{x}{v1\sqrt{x^2+ ha^2}} + \frac{-(l-x)}{v2\sqrt{(l-x)^2+hw^2}} = 0')
+        equation_time_by_x = MathTex(r'\frac{dT}{dx} = \frac{x}{v_1\sqrt{x^2+ ha^2}} + \frac{-(l-x)}{v_2\sqrt{(l-x)^2+hw^2}} = 0')
         equation_time_by_x.move_to(equation_time_transformed)
         self.remove(equation_time_transformed)
         self.play(ReplacementTransform(equation_time_transformed, equation_time_by_x))
         self.wait(1)
         
+        relation_with_angle1 = MathTex(r'\text{note que} \frac{x}{\sqrt{x^2+ ha^2}} = \sin\theta_1')
+        relation_with_angle1.next_to(equation_time_by_x, DOWN)
+        self.play(Write(relation_with_angle1))
         
+        self.wait(1)
+
+        relation_with_angle2 = MathTex(r'\text{e que} \frac{l-x}{\sqrt{(l-x)^2+hw^2}} = \sin\theta_2')
+        relation_with_angle2.next_to(relation_with_angle1, DOWN)
+        self.play(Write(relation_with_angle2))
+
+        self.wait(1)
         
-        
+        self.remove(relation_with_angle1, equation_time_by_x)
+
+        equation_dx_with_sin = MathTex(r'\frac{dT}{dx} = \frac{\sin\theta_1}{v_1} - \frac{\sin\theta_2}{v_2} = 0')
+        equation_dx_with_sin.move_to(relation_with_angle2)
+        self.play(ReplacementTransform(relation_with_angle2, equation_dx_with_sin))
+        self.wait(1)
+
+        equation_angle_and_velocity = MathTex(r'\frac{\sin\theta_1}{v_1} = \frac{\sin\theta_2}{v_2}')
+        equation_angle_and_velocity.move_to(equation_dx_with_sin)
+        self.play(ReplacementTransform(equation_dx_with_sin, equation_angle_and_velocity))
+        self.wait(1)
+
+
         self.wait(1)
