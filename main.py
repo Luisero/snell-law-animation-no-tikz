@@ -193,7 +193,16 @@ class SnellsLaw(MovingCameraScene):
             )  
 
         
-        #self.play(self.camera.frame.animate.set(width=linha_horizontal.width*1.8).move_to(RIGHT*6))
-
-    
+        equation_time = Tex(r'$$ T=\frac{\sqrt{ x^2 + ha^2 }}{v1} + \frac{\sqrt{hw^2 + (d-x)^2}}{v2} $$')
+        equation_time.move_to(RIGHT*10+UP)
+        self.remove(axes, dot, labels)
+        self.play(Transform(parabola, equation_time))
+        self.wait(1)
+        equation_time2 = Tex(r'$$ T=\frac{\sqrt{x^2+ha^2}}{v1} + \frac{\sqrt{hw^2+d^2-2dx+x^2}}{v2} $$')
+        equation_time2.move_to(RIGHT*10+UP)
+        self.play(Transform(equation_time, equation_time2))
+        
+        
+        
+        
         self.wait(1)
